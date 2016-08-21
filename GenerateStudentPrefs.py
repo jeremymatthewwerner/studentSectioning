@@ -33,13 +33,11 @@ for studentNum in range(0,numStudents):
 	items=classSections.items() # List of tuples
 	random.shuffle(items)
 
-	print "Dudette" + str(numPrefs)
 	morePrefs = numPrefs
 	for key, value in items:
-		print "Dude" + str(morePrefs)
 		if(morePrefs > 1):
 			print str(studentNum) + ":" + str(value)
-		morePrefs=-1
+		morePrefs-=1
 
 #classSectionJson = json.dumps(classSections)
 
