@@ -4,6 +4,9 @@ import sys
 import json
 import random
 
+import pprint
+
+
 def get_pretty_print(json_object):
     return json.dumps(json_object, sort_keys=True, indent=4, separators=(',', ': '))
 
@@ -24,13 +27,12 @@ classSectionID = 0;
 for classNum in range(0,numClasses):
 	for sectionNum in range(0,numSections):
 		classSectionDict = {'classNum':classNum, 'sectionNum':sectionNum}
-		classSections[str(classSectionID)] = classSectionDict
+		classSections["Class Section " + str(classSectionID)] = classSectionDict
 		classSectionID+=1
 
 allPrefs = {}
 
 for studentNum in range(0,numStudents):
-	print "Student " + str(studentNum)
 
 	items=classSections.items() # List of tuples
 	random.shuffle(items)
@@ -40,14 +42,19 @@ for studentNum in range(0,numStudents):
 	prefId = 0
 	for key, value in items:
 		if(morePrefs > 1):
-			prefs[str(prefId)] = {str(key):str(value)}
+			prefs["Preference " + str(prefId)] = {str(key):str(value)}
 			prefId+=1
 		morePrefs-=1
-	allPrefs[str(studentNum)] = prefs
+	allPrefs["Student " + str(studentNum)] = prefs
 
-print(allPrefs)
+#print(allPrefs)
+
+allPrefs["NumClasses"] = numClasses;
+allPrefs["NumSections"] = numSections;
+allPrefs["NumPrefs"] = numPrefs;
+
+classSectionJson = json.dumps(allPrefs, indent=4, sort_keys=True)
+
+print classSectionJson
 
 
-classSectionJson = json.dumps(allPrefs)
-
-print get_pretty_print(classSectionJson)
