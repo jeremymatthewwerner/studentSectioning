@@ -24,11 +24,23 @@ classSectionID = 0;
 for classNum in range(0,numClasses):
 	for sectionNum in range(0,numSections):
 		classSectionDict = {'classNum':classNum, 'sectionNum':sectionNum}
-		classSections[classSectionID] = classSectionDict
+		classSections[str(classSectionID)] = classSectionDict
 		classSectionID+=1
 
-random.shuffle(classSections)
+for studentNum in range(0,numStudents):
+	print "Student " + str(studentNum)
 
-classSectionJson = json.dumps(classSections)
+	items=classSections.items() # List of tuples
+	random.shuffle(items)
 
-print get_pretty_print(classSectionJson)
+	print "Dudette" + str(numPrefs)
+	morePrefs = numPrefs
+	for key, value in items:
+		print "Dude" + str(morePrefs)
+		if(morePrefs > 1):
+			print str(studentNum) + ":" + str(value)
+		morePrefs=-1
+
+#classSectionJson = json.dumps(classSections)
+
+#print get_pretty_print(classSectionJson)
