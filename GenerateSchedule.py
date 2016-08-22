@@ -18,4 +18,15 @@ with open(sys.argv[1]) as data_file:
 numClasses = input["NumClasses"]
 numSections = input["NumSections"]
 numStudents= input["NumStudents"]
-numPrefs = input["NumPrefs"]
+numPrefLevels = input["NumPrefLevels"]
+numTracks = input["NumTracks"]
+
+sectionsKey = input["SectionsKey"]
+classesKey = input["ClassesKey"]
+studentsKey = input["StudentsKey"]
+
+allPrefs = {}
+
+for student in AllPrefs[studentsKey]:
+	print student
+

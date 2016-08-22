@@ -15,11 +15,9 @@ numStudents= input["NumStudents"]
 numPrefLevels = input["NumPrefLevels"]
 numTracks = input["NumTracks"]
 
-studentPrefix = "Student "
-sectionPrefix = "Section "
-classPrefix = "Class "
 sectionsKey = "Sections"
 classesKey = "Classes"
+studentsKey = "Students"
 
 allPrefs = {}
 
@@ -29,30 +27,27 @@ allPrefs["NumStudents"] = numSections;
 allPrefs["NumPreflevels"] = numPrefLevels;
 allPrefs["NumTracks"] = numTracks;
 
-allPrefs["StudentPrefix"] = studentPrefix;
-allPrefs["SectionPrefix"] = sectionPrefix;
-allPrefs["ClassPrefix"] = classPrefix;
 allPrefs["SectionsKey"] = sectionsKey;
 allPrefs["ClassesKey"] = classesKey;
+allPrefs["StudentsKey"] = studentsKey;
+
 
 for studentNum in range(0,numStudents):
 
 	sections = {}
+	for sectionNum in range(0,numSections):
+		sections[str(sectionNum)] = random.randint(0,1)
 
 	classes = {}
-
-	for sectionNum in range(0,numSections):
-		sections[sectionPrefix + str(sectionNum)] = random.randint(0,1)
-
 	for sectionNum in range(0,numClasses):
-		classes[classPrefix + str(sectionNum)] = random.randint(0,numPrefLevels)
+		classes[str(sectionNum)] = random.randint(0,numPrefLevels-1)
 
-	allPrefs[studentPrefix + str(studentNum)] = {}
-	allPrefs[studentPrefix + str(studentNum)][sectionsKey] = sections
-	allPrefs[studentPrefix + str(studentNum)][classesKey] = classes
+	allPrefs[studentsKey] = {}
+	allPrefs[studentsKey][str(studentNum)] = {}
+	allPrefs[studentsKey][str(studentNum)][sectionsKey] = sections
+	allPrefs[studentsKey][str(studentNum)][classesKey] = classes
 
 allPrefsJson = json.dumps(allPrefs, indent=4, sort_keys=True)
 
 print allPrefsJson
-	
 
