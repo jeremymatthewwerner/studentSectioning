@@ -21,7 +21,7 @@ numStudents= input["NumStudents"]
 numPrefs = input["NumPrefs"]
 
 classSectionPrefix = "Class Section "
-preferencePrefix = "Preference "
+prefrencePrefix = "Preference "
 studentPrefix = "Student "
 
 
