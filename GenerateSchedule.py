@@ -28,6 +28,8 @@ studentsKey = input["StudentsKey"]
 allPrefs = {}
 
 classScores = [[0 for i in range(0,numClasses)] for j in range(0,numSections)]
+classScores[1][1] += 1
+print classScores
 
 for studentNum in range(0,numStudents):
 	#print str(studentNum) + ":"
@@ -36,8 +38,8 @@ for studentNum in range(0,numStudents):
 	for classNum in range(0,numClasses):
 		for sectionNum in range(0,numSections):
 			if(input[studentsKey][str(studentNum)][str(sectionsKey)][str(sectionNum)] == 1):
-				classScores[classNum][sectionNum] += input[studentsKey][str(studentNum)][str(classesKey)][str(classNum)]
-
+				print str(classNum)+","+str(sectionNum)
+				classScores[sectionNum][classNum] += input[studentsKey][str(studentNum)][str(classesKey)][str(classNum)]
 
 print classScores
 		
