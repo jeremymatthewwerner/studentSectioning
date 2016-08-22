@@ -20,6 +20,11 @@ numSections = input["NumSections"]
 numStudents= input["NumStudents"]
 numPrefs = input["NumPrefs"]
 
+classSectionPrefix = "Class Section "
+preferencePrefix = "Preference "
+studentPrefix = "Student "
+
+
 classSections = {}
 
 
@@ -27,7 +32,7 @@ classSectionID = 0;
 for classNum in range(0,numClasses):
 	for sectionNum in range(0,numSections):
 		classSectionDict = {'classNum':classNum, 'sectionNum':sectionNum}
-		classSections["Class Section " + str(classSectionID)] = classSectionDict
+		classSections[classSectionPrefix + str(classSectionID)] = classSectionDict
 		classSectionID+=1
 
 allPrefs = {}
@@ -42,16 +47,20 @@ for studentNum in range(0,numStudents):
 	prefId = 0
 	for key, value in items:
 		if(morePrefs > 1):
-			prefs["Preference " + str(prefId)] = {str(key):str(value)}
+			prefs[prefrencePrefix + str(prefId)] = {str(key):str(value)}
 			prefId+=1
 		morePrefs-=1
-	allPrefs["Student " + str(studentNum)] = prefs
+	allPrefs[studentPrefix + str(studentNum)] = prefs
 
 #print(allPrefs)
 
 allPrefs["NumClasses"] = numClasses;
 allPrefs["NumSections"] = numSections;
 allPrefs["NumPrefs"] = numPrefs;
+allPrefs["ClassSectionPrefix"] = classSectionPrefix;
+allPrefs["PrefrencePrefix"] = prefrencePrefix;
+allPrefs["StudentPrefix"] = studentPrefix;
+
 
 classSectionJson = json.dumps(allPrefs, indent=4, sort_keys=True)
 
