@@ -27,6 +27,8 @@ studentsKey = input["StudentsKey"]
 
 allPrefs = {}
 
-for student in AllPrefs[studentsKey]:
-	print student
+for studentNum in range(0,numStudents):
+	print str(studentNum) + ":"
+	print input[studentsKey][str(studentNum)][classesKey]
+	print input[studentsKey][str(studentNum)][sectionsKey]
 

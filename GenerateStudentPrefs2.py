@@ -23,14 +23,15 @@ allPrefs = {}
 
 allPrefs["NumClasses"] = numClasses;
 allPrefs["NumSections"] = numSections;
-allPrefs["NumStudents"] = numSections;
-allPrefs["NumPreflevels"] = numPrefLevels;
+allPrefs["NumStudents"] = numStudents;
+allPrefs["NumPrefLevels"] = numPrefLevels;
 allPrefs["NumTracks"] = numTracks;
 
 allPrefs["SectionsKey"] = sectionsKey;
 allPrefs["ClassesKey"] = classesKey;
 allPrefs["StudentsKey"] = studentsKey;
 
+allPrefs[studentsKey] = {}
 
 for studentNum in range(0,numStudents):
 
@@ -42,7 +43,6 @@ for studentNum in range(0,numStudents):
 	for sectionNum in range(0,numClasses):
 		classes[str(sectionNum)] = random.randint(0,numPrefLevels-1)
 
-	allPrefs[studentsKey] = {}
 	allPrefs[studentsKey][str(studentNum)] = {}
 	allPrefs[studentsKey][str(studentNum)][sectionsKey] = sections
 	allPrefs[studentsKey][str(studentNum)][classesKey] = classes
