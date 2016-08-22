@@ -3,6 +3,7 @@
 import sys
 import json
 import random
+import numpy as np
 
 import pprint
 
@@ -28,19 +29,26 @@ studentsKey = input["StudentsKey"]
 allPrefs = {}
 
 classScores = [[0 for i in range(0,numClasses)] for j in range(0,numSections)]
-classScores[1][1] += 1
-print classScores
+
+schedule = [[-1 for i in range(0,numTracks)] for j in range(0, numSections)]
 
 for studentNum in range(0,numStudents):
-	#print str(studentNum) + ":"
-	#print input[studentsKey][str(studentNum)][classesKey]
-	#print input[studentsKey][str(studentNum)][sectionsKey]
 	for classNum in range(0,numClasses):
 		for sectionNum in range(0,numSections):
 			if(input[studentsKey][str(studentNum)][str(sectionsKey)][str(sectionNum)] == 1):
-				print str(classNum)+","+str(sectionNum)
-				classScores[sectionNum][classNum] += input[studentsKey][str(studentNum)][str(classesKey)][str(classNum)]
+				classScores[sectionNum][classNum] += input[studentsKey][str(studentNum)][str(classesKey)][str(classNum)]	
 
 print classScores
+
+for sectionNum in range(0,numSections):
+	arr = np.array(classScores[sectionNum])
+	top3 = arr.argsort()[numTracks*-1:][::-1]
+	for trackNum in range(0, numTracks):
+		schedule[sectionNum][trackNum] = top3[trackNum]
+
+print schedule
+
+
+
 		
 
