@@ -48,7 +48,7 @@ def studentScheduleScore(student, schedule, studentNum):
 		for sectionNum in range(0,numSections):
 			if(student[str(sectionsKey)][str(sectionNum)] == 1):
 				atLeastOneSection = 1
-				#print "TODO: Check schedule tracks for class " + str(rankedClass) + " in section " + str(sectionNum)
+				#print ": Check schedule tracks for class " + str(rankedClass) + " in section " + str(sectionNum)
 				if rankedClass in schedule[sectionNum]:
 					found = 1
 		
@@ -80,6 +80,29 @@ def scheduleScore(schedule, inputJson):
 
 	return np.mean(scores)
 
+def mutateSchedule(schedule, inputJson):
+	notScheduledClasses = []
+	# List all classIds that are not in the current schedule
+	for classNum in range(0,numClasses):
+		isScheduled = 0
+		for sectionNum in range(0,numSections):
+				#print "XXX " + str(schedule[sectionNum])
+				if classNum in schedule[sectionNum]:
+					scheduled = 1
+		if isScheduled == 0:
+			notScheduledClasses.append(classNum)
+
+	# Swap one of those randomly in for a random one
+	randSect = random.randint(0,numSections)
+	randTrack = random.randint(0,numTracks)
+
+	newClass = random.choice(notScheduledClasses)
+	print "Not scheduled classes: " + str(notScheduledClasses)
+	print "Mutating " + str(schedule) + " replacing " + str(schedule[randSect][randTrack]) + " with " + str(newClass) 
+	schedule[randSect][randTrack] = newClass
+
+	print 
+
 
 ##### Simulated Annealing Class
 
@@ -89,7 +112,7 @@ class StudentSectioningAnnealing(Annealer):
 		super(StudentSectioningAnnealing, self).__init__(state)  # important! 
 
 	def move(self):
-		print "TODO: Randomly change the schedule"
+		self.state = mutateSchedule(self.state, self.prefs)
 
 	def energy(self):
 		return scheduleScore(self.state, self.prefs)	
@@ -132,6 +155,10 @@ print "Schedule score: " + str(scheduleScore(schedule, input))
 
 # Run sumulated annealing to improve the schedule
 studentSectAnnealing = StudentSectioningAnnealing(schedule, input)
+studentSectAnnealing.Tmax = 140
+studentSectAnnealing.Tmin = 80
+studentSectAnnealing.steps = 5000 # should be more like 50k
+studentSectAnnealing.updates = 100
 result = studentSectAnnealing.anneal()
 
 print "SA result: " + str(result)
