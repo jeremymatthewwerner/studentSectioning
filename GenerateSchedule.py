@@ -85,11 +85,18 @@ for studentNum in range(0,numStudents):
 
 #print classScores
 
+print classScores
 for sectionNum in range(0,numSections):
 	arr = np.array(classScores[sectionNum])
+	print "arr:" + str(arr)
 	top3 = arr.argsort()[numTracks*-1:][::-1]
+	print "top3: " + str(top3)
 	for trackNum in range(0, numTracks):
 		schedule[sectionNum][trackNum] = top3[trackNum]
+		
+		for sectionNum2 in range(0,numSections):
+			print "zeroing out score in all sections for " + str(classScores[sectionNum2][top3[trackNum]]) + " at index " + str(top3[trackNum]) + " from " + str(classScores[sectionNum2])
+			classScores[sectionNum2][top3[trackNum]] = 0 # assuming we don't ever want to offer the same class twice over the day
 
 print "Schedule:" + str(schedule)
 
