@@ -64,10 +64,16 @@ def studentScheduleScore(student, schedule, studentNum):
 	return score
 
 def scheduleScore(schedule, inputJson):
+	return scheduleScoreMaybeVerbose(schedule, inputJson, False)
+
+def scheduleScoreMaybeVerbose(schedule, inputJson, verbose):
+	if(verbose):
+		print "scheduleScore schedule: " + str(schedule)
 	scores = []
 	for studentNum in range(0,numStudents):
 		score = studentScheduleScore(inputJson[studentsKey][str(studentNum)], schedule, studentNum)
-		#print "Student " + str(studentNum) + ": " + str(score)
+		if(verbose):
+			print "Student " + str(studentNum) + ": " + str(score)
 		scores.append(score)
 
 	nscores = np.array(scores)
@@ -76,7 +82,8 @@ def scheduleScore(schedule, inputJson):
 	for sortIndex in scoreSortedIndices:
 		studentsSortedByScore.append(sortIndex)
 
-	#print "Students sorted by score: " + str(studentsSortedByScore)
+	if(verbose):
+		print "Students sorted by score: " + str(studentsSortedByScore)
 
 	return np.mean(scores)
 
@@ -88,21 +95,20 @@ def mutateSchedule(schedule, inputJson):
 		for sectionNum in range(0,numSections):
 				#print "XXX " + str(schedule[sectionNum])
 				if classNum in schedule[sectionNum]:
-					scheduled = 1
+					isScheduled = 1
 		if isScheduled == 0:
 			notScheduledClasses.append(classNum)
 
 	# Swap one of those randomly in for a random one
-	randSect = random.randint(0,numSections)
-	randTrack = random.randint(0,numTracks)
+	randSect = random.randint(0,numSections-1)
+	randTrack = random.randint(0,numTracks-1)
 
 	newClass = random.choice(notScheduledClasses)
-	print "Not scheduled classes: " + str(notScheduledClasses)
-	print "Mutating " + str(schedule) + " replacing " + str(schedule[randSect][randTrack]) + " with " + str(newClass) 
+	#print "Not scheduled classes: " + str(notScheduledClasses)
+	#print "Mutating " + str(schedule) + " replacing " + str(schedule[randSect][randTrack]) + " with " + str(newClass) 
 	schedule[randSect][randTrack] = newClass
 
-	print 
-
+	#print schedule
 
 ##### Simulated Annealing Class
 
@@ -112,7 +118,7 @@ class StudentSectioningAnnealing(Annealer):
 		super(StudentSectioningAnnealing, self).__init__(state)  # important! 
 
 	def move(self):
-		self.state = mutateSchedule(self.state, self.prefs)
+		mutateSchedule(self.state, self.prefs)
 
 	def energy(self):
 		return scheduleScore(self.state, self.prefs)	
@@ -151,14 +157,18 @@ for sectionNum in range(0,numSections):
 
 print "Schedule:" + str(schedule)
 
-print "Schedule score: " + str(scheduleScore(schedule, input))
+print "Schedule score: " + str(scheduleScoreMaybeVerbose(schedule, input, True))
 
 # Run sumulated annealing to improve the schedule
 studentSectAnnealing = StudentSectioningAnnealing(schedule, input)
-studentSectAnnealing.Tmax = 140
-studentSectAnnealing.Tmin = 80
-studentSectAnnealing.steps = 5000 # should be more like 50k
-studentSectAnnealing.updates = 100
+#studentSectAnnealing.Tmax = 140
+#studentSectAnnealing.Tmin = 80
+#studentSectAnnealing.steps = 10000
+#studentSectAnnealing.updates = 100
+auto_schedule = studentSectAnnealing.auto(minutes=1) 
+studentSectAnnealing.set_schedule(auto_schedule)
 result = studentSectAnnealing.anneal()
 
 print "SA result: " + str(result)
+
+scheduleScoreMaybeVerbose(result[0], input, True)
