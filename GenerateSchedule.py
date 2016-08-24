@@ -10,9 +10,10 @@ import json
 import random
 import numpy as np
 from operator import itemgetter
-
+from simanneal import Annealer
 import pprint
 
+##### PARSE COMMAND LINE
 with open(sys.argv[1]) as data_file:    
 	input = json.load(data_file)
 
@@ -25,6 +26,9 @@ numTracks = input["NumTracks"]
 sectionsKey = input["SectionsKey"]
 classesKey = input["ClassesKey"]
 studentsKey = input["StudentsKey"]
+
+
+##### HELPER FUNCTIONS
 
 def get_pretty_print(json_object):
 	return json.dumps(json_object, sort_keys=True, indent=4, separators=(',', ': '))
@@ -63,7 +67,7 @@ def scheduleScore(schedule, inputJson):
 	scores = []
 	for studentNum in range(0,numStudents):
 		score = studentScheduleScore(inputJson[studentsKey][str(studentNum)], schedule, studentNum)
-		print "Student " + str(studentNum) + ": " + str(score)
+		#print "Student " + str(studentNum) + ": " + str(score)
 		scores.append(score)
 
 	nscores = np.array(scores)
@@ -72,9 +76,26 @@ def scheduleScore(schedule, inputJson):
 	for sortIndex in scoreSortedIndices:
 		studentsSortedByScore.append(sortIndex)
 
-	print "Students sorted by score: " + str(studentsSortedByScore)
+	#print "Students sorted by score: " + str(studentsSortedByScore)
 
 	return np.mean(scores)
+
+
+##### Simulated Annealing Class
+
+class StudentSectioningAnnealing(Annealer):
+	def __init__(self, state, inPrefs): #state is current schedule
+		self.prefs = inPrefs
+		super(StudentSectioningAnnealing, self).__init__(state)  # important! 
+
+	def move(self):
+		print "TODO: Randomly change the schedule"
+
+	def energy(self):
+		return scheduleScore(self.state, self.prefs)	
+
+
+##### ENTRYPOINT
 
 random.seed()
 
@@ -92,8 +113,6 @@ for studentNum in range(0,numStudents):
 			if(input[studentsKey][str(studentNum)][str(sectionsKey)][str(sectionNum)] == 1):
 				classScores[sectionNum][classNum] += input[studentsKey][str(studentNum)][str(classesKey)][str(classNum)]	
 
-#print classScores
-
 print classScores
 for sectionNum in range(0,numSections):
 	arr = np.array(classScores[sectionNum])
@@ -110,3 +129,9 @@ for sectionNum in range(0,numSections):
 print "Schedule:" + str(schedule)
 
 print "Schedule score: " + str(scheduleScore(schedule, input))
+
+# Run sumulated annealing to improve the schedule
+studentSectAnnealing = StudentSectioningAnnealing(schedule, input)
+result = studentSectAnnealing.anneal()
+
+print "SA result: " + str(result)
