@@ -1,7 +1,7 @@
 {
-    "NumClasses": 10,
+    "NumClasses": 20,
     "NumSections": 4,
     "NumStudents": 60,
-    "NumPrefLevels": 5,
+    "NumPrefLevels": 4,
     "NumTracks": 3
 }

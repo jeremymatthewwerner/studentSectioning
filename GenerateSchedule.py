@@ -62,7 +62,9 @@ def studentScheduleScore(student, schedule, studentNum):
 def scheduleScore(schedule, inputJson):
 	scores = []
 	for studentNum in range(0,numStudents):
-		scores.append(studentScheduleScore(inputJson[studentsKey][str(studentNum)], schedule, studentNum))
+		score = studentScheduleScore(inputJson[studentsKey][str(studentNum)], schedule, studentNum)
+		print "Student " + str(studentNum) + ": " + str(score)
+		scores.append(score)
 	return np.mean(scores)
 
 random.seed()
