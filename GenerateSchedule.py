@@ -1,9 +1,15 @@
 #!/usr/bin/python
 
+# psudo-optimal blocked class scheduling
+# higher student class ratings are higher
+# 1 means student can takes classes during a block, 0 means cannot
+# lower per-student schedules are higher
+
 import sys
 import json
 import random
 import numpy as np
+from operator import itemgetter
 
 import pprint
 
@@ -23,13 +29,24 @@ studentsKey = input["StudentsKey"]
 def get_pretty_print(json_object):
 	return json.dumps(json_object, sort_keys=True, indent=4, separators=(',', ': '))
 
-def studentScheduleScore(student, schedule):
+def studentScheduleScore(student, schedule, studentNum):
+	print "Student:" + str(studentNum)
+	rankedClasses = sorted(student[str(classesKey)].items(), key=itemgetter(1), reverse=True)
+	#print "SortedClasses: " + str(rankedClasses)
+	#print "Schedule: " + str(schedule)
+
+	for rankedEntry in rankedClasses:
+		rankedClass =  str(rankedEntry[0])
+		for sectionNum in range(0,numSections):
+			if(student[str(sectionsKey)][str(sectionNum)] == 1):
+				print "TODO: Check schedule tracks for class " + str(rankedClass) + " in section " + str(sectionNum)
+
 	return 3
 
 def scheduleScore(schedule, inputJson):
 	scores = []
 	for studentNum in range(0,numStudents):
-		scores.append(studentScheduleScore(inputJson[studentsKey][str(studentNum)], schedule))
+		scores.append(studentScheduleScore(inputJson[studentsKey][str(studentNum)], schedule, studentNum))
 	return np.mean(scores)
 
 random.seed()
