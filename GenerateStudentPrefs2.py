@@ -38,6 +38,8 @@ for studentNum in range(0,numStudents):
 	sections = {}
 	for sectionNum in range(0,numSections):
 		sections[str(sectionNum)] = random.randint(0,1)
+	if 1 not in sections:
+		sections[str(random.randint(0,numSections-1))] = 1
 
 	classes = {}
 	for sectionNum in range(0,numClasses):

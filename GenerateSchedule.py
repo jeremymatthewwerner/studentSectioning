@@ -45,7 +45,7 @@ def studentScheduleScore(student, schedule, studentNum):
 			if(student[str(sectionsKey)][str(sectionNum)] == 1):
 				atLeastOneSection = 1
 				#print "TODO: Check schedule tracks for class " + str(rankedClass) + " in section " + str(sectionNum)
-				if rankedClass  in schedule[sectionNum]:
+				if rankedClass in schedule[sectionNum]:
 					found = 1
 		
 		if(atLeastOneSection == 0):
