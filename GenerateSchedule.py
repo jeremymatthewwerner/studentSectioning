@@ -30,18 +30,34 @@ def get_pretty_print(json_object):
 	return json.dumps(json_object, sort_keys=True, indent=4, separators=(',', ': '))
 
 def studentScheduleScore(student, schedule, studentNum):
-	print "Student:" + str(studentNum)
+	#print "Student:" + str(studentNum)
 	rankedClasses = sorted(student[str(classesKey)].items(), key=itemgetter(1), reverse=True)
-	#print "SortedClasses: " + str(rankedClasses)
-	#print "Schedule: " + str(schedule)
+
+	score = 0; # 0 is a perfect score
+	cost = len(rankedClasses)
 
 	for rankedEntry in rankedClasses:
-		rankedClass =  str(rankedEntry[0])
+		rankedClass = int(rankedEntry[0])
+
+		found = 0
+		atLeastOneSection = 0
 		for sectionNum in range(0,numSections):
 			if(student[str(sectionsKey)][str(sectionNum)] == 1):
-				print "TODO: Check schedule tracks for class " + str(rankedClass) + " in section " + str(sectionNum)
+				atLeastOneSection = 1
+				#print "TODO: Check schedule tracks for class " + str(rankedClass) + " in section " + str(sectionNum)
+				if rankedClass  in schedule[sectionNum]:
+					found = 1
+		
+		if(atLeastOneSection == 0):
+			print "ERROR: Student " + str(studentNum) + " chose no sections so their score will skew the result!"
+		
+		if(found==0):
+			score += cost	
+			#print "deducted " + str(cost) + " for new score " + str(score) + ", did not find " + str(rankedClass) + " in any sections the student can attend"
 
-	return 3
+		cost -= 1
+
+	return score
 
 def scheduleScore(schedule, inputJson):
 	scores = []
